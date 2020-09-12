@@ -23,6 +23,12 @@ train_set = torchvision.datasets.CIFAR10(
     download=DOWNLAOD,
     transform=transform
 )
+# 使用torchvision down下来的数据，数据存在data中，label 存在targets中
+# cifar的数据就是数组，不是tensor
+# torch.Size([50000, 32, 32, 3])
+print(len(train_set))
+print(torch.tensor(train_set.targets).size())
+print(torch.tensor(train_set.data).size())
 
 # DataLoader就是用来包装所使用的数据，每次抛出一批数据
 # batch_size (int, optional) – how many samples per batch to load (default: 1) 比如这里一批数据是4张图片。
@@ -43,6 +49,7 @@ classes = ('plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship'
 
 
 # 测试数据，并画图
+# img is a tensor
 def imshow(img):
     img = img / 2 + 0.5  # unnormalize
     npimg = img.numpy()
@@ -52,8 +59,9 @@ def imshow(img):
 
 
 # get some random training images
-# dataiter = iter(train_loader)
-# images, labels = dataiter.next()
+dataiter = iter(train_loader)
+images, labels = dataiter.next()
+
 
 # show images
 # make_grid的作用是将若干幅图像拼成一幅图像。
@@ -65,6 +73,7 @@ def imshow(img):
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
+        # outputsize = [(inputsize - kernel + 2*padding) / stride] + 1
         self.conv1 = nn.Sequential(
             nn.Conv2d(
                 in_channels=3,

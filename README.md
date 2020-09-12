@@ -1,1 +1,1 @@
-# pytorch_demo_excercise
+# pytorch_excercise_demo
